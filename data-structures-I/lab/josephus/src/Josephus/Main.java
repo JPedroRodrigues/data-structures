@@ -139,22 +139,22 @@ public class Main {
                         continue;
                     }
 
+                    // Get soldier's name
+                    System.out.print("Name the soldier who is going to be the first of the counting: ");
+                    String name = scanner.nextLine();
+
+                    Node selectedSoldier = list.search(name);
+                    if (selectedSoldier == null) {
+                        System.out.println("There is no soldier with given name. Please re-enter a name.");
+                        continue;
+                    } else {
+                        System.out.println("Soldier found successfully.");
+                        System.out.printf("Name: %s\n", selectedSoldier.getSoldier().getName());
+                        System.out.printf("ID: %d\n", selectedSoldier.getSoldier().getId());
+                    }
+
                     // Repeat while list has more than one soldier
                     while (list.getCount() > 1) {
-                        // Get soldier's name
-                        System.out.print("Name the soldier who is going to be the first of the counting: ");
-                        String name = scanner.nextLine();
-
-                        Node removedSoldier = list.search(name);
-                        if (removedSoldier == null) {
-                            System.out.println("There is no soldier with given name. Please re-enter a name.");
-                            continue;
-                        } else {
-                            System.out.println("Soldier found successfully.");
-                            System.out.printf("Name: %s\n", removedSoldier.getSoldier().getName());
-                            System.out.printf("ID: %d\n", removedSoldier.getSoldier().getId());
-                        }
-
                         // Create a random object
                         Random random = new Random();
 
@@ -166,15 +166,18 @@ public class Main {
 
                         // Keep iterating through the list until the soldier in the random position is selected
                         while (count != randomNumber1) {
-                            removedSoldier = removedSoldier.getNext();
+                            selectedSoldier = selectedSoldier.getNext();
                             count++;
                         }
 
                         // Showing off the selected soldier's information
-                        System.out.printf("\nName of the soldier who is going to be removed: %s\n", removedSoldier.getSoldier().getName());
-                        System.out.printf("Soldier's ID: %d\n", removedSoldier.getSoldier().getId());
+                        System.out.printf("\nName of the soldier who is going to be removed: %s\n", selectedSoldier.getSoldier().getName());
+                        System.out.printf("Soldier's ID: %d\n", selectedSoldier.getSoldier().getId());
 
-                        if (list.remove(removedSoldier.getSoldier())) { System.out.println("\nRemoval done successfully.\n"); }
+                        Node removedSoldier = selectedSoldier;
+                        selectedSoldier = selectedSoldier.getNext();
+
+                        if (list.remove(removedSoldier.getSoldier())) { System.out.println("\nRemoval done successfully."); }
                         else { System.out.println("\nThere is no soldier with such a name."); }
                     }
 
