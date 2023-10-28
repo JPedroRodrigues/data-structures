@@ -113,53 +113,45 @@ public class List {
 
 		// Initializing a current and previous pointers
 		Node currPointer = head;
-		Node prevPointer;
+		Node prevPointer = null;
 
-		int index = 0;
+		int index = 1;
 
 		// Iterates through the list until the given line is reached
-		do {
+		while (index != line) {
 			prevPointer = currPointer;
 			currPointer = currPointer.getNext();
 			++index;
-		} while (index != line);
+		}
+
+		// Storing the node which will be deleted
+		Node removedNode = currPointer;
 
 		// If the given line is the first
 		if (index == 1) {
 			// There will be a new head
-			head = currPointer;
+			head = head.getNext();
 
-			// prevPointer is the previous head, so it will be pointing to null
-			// since it's going to be removed
-			prevPointer.setNext(null);
-			prevPointer.setPrevious(null);
-
-			// New head and the actual tail will be pointing to each other
+			// New head and the current tail will be pointing to each other
 			head.setPrevious(tail);
 			tail.setNext(head);
 		} else if (index == count) {
 			// tail is set to a past node and connects again with the head
-			tail = prevPointer.getPrevious();
+			tail = prevPointer;
+
 			tail.setNext(head);
-
 			head.setPrevious(tail);
-
-			// terminating connections of the deleted node
-			prevPointer.setPrevious(null);
-			prevPointer.setNext(null);
 		} else {
-			// new node to store the previous node from prevNode
-			Node temp = prevPointer.getPrevious();
+			// the previous pointer will now be pointing to the next of the current node
+			prevPointer.setNext(currPointer.getNext());
 
-			// the currPointer is pointing to the temp as its previous node
-			// the next temp's node is now the currPointer
-			currPointer.setPrevious(temp);
-			temp.setNext(currPointer);
-
-			// cutting connections of the deleted node
-			prevPointer.setNext(null);
-			prevPointer.setPrevious(null);
+			// the next node of the current pointer will be pointing to the previous node
+			currPointer.getNext().setPrevious(prevPointer);
 		}
+
+		// terminating connections of the deleted node
+		removedNode.setPrevious(null);
+		removedNode.setNext(null);
 
 		--count;
 		return true;

@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -92,6 +93,9 @@ public class Main {
                     if (command.length == 3) {
                         startLine = Integer.parseInt(command[1]);
                         endLine = Integer.parseInt(command[2]);
+                    } else if (command.length == 2) {
+                        System.out.println("This command should have more than one number");
+                        continue;
                     }
 
                     if (startLine > endLine) {
@@ -130,12 +134,70 @@ public class Main {
                 }
 
                 case 'x' -> {
+                    // Placing all the command elements into an array
                     String[] command = cmd.split(" ");
 
+                    // Commands with a number of elements different from 2 will not be accepted
+                    if (command.length != 2) {
+                        System.out.println("Invalid option. Please, check out :help to see how to write it correctly.");
+                        continue;
+                    }
+
+                    // Getting the line from where the code will be swept
+                    int currLine = Integer.parseInt(command[1]);
+
+                    if (currLine > list.len() || currLine <= 0) {
+                        System.out.println("Invalid line number. The number must not exceed the code's size and be greater than zero.");
+                        continue;
+                    }
+
+                    // Iterating through the list until the head is reached
+                    Node head = list.getHead();
+
+                    if ((command[0].length() == 3) && (command[0].charAt(2) == 'G')) {
+                        while (list.searchLine(currLine).getNext() != head) {
+                            System.out.println("Line deleted: " + list.searchLine(currLine));
+                            list.removeLine(currLine);
+                        }
+                    } else if ((command[0].length() == 2)) {
+                        list.removeLine(currLine);
+                    } else {
+                        System.out.println("Invalid option. Please, enter :help to check out all commands.");
+                    }
+
+                    System.out.println("Removal done successfully.");
                 }
 
                 case 'X' -> {
+                    // Placing all the command elements into an array
+                    String[] command = cmd.split(" ");
 
+                    // Commands with a number of elements different from 2 will not be accepted
+                    if (command.length != 2) {
+                        System.out.println("Invalid option. Please, check out :help to see how to write it correctly.");
+                        continue;
+                    }
+
+                    // Getting the line from where the code will be swept
+                    int currLine = Integer.parseInt(command[1]);
+
+                    if (currLine > list.len() || currLine <= 0) {
+                        System.out.println("Invalid line number. The number must not exceed the code's size and be greater than zero.");
+                        continue;
+                    }
+
+                    // Going through the list from the given number to the first line
+                    if (command[0].length() == 3 && command[0].charAt(2) == 'G') {
+                        while (currLine >= 1) {
+                            System.out.println("Line deleted: " + list.searchLine(currLine));
+                            list.removeLine(currLine);
+                            --currLine;
+                        }
+                    } else {
+                        System.out.println("Invalid option. Please, enter :help to check out all commands.");
+                    }
+
+                    System.out.println("Removal done successfully.");
                 }
 
                 case '/' -> {
