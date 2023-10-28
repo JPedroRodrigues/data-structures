@@ -166,11 +166,46 @@ public class List {
 	}
 
 	// search
+	public Node searchLine(int line) {
+		if (isEmpty()) return null;
+
+		Node node = head;
+		int index = 1;
+
+		while (index != line && index <= count) {
+			node = node.getNext();
+			++index;
+		}
+
+		if (index > count) return null;
+		return node;
+	}
+
+	public void print(int startLine, int endLine) {
+		if (isEmpty()) {
+			System.out.println("List is empty!");
+		} else {
+			// Traverse the list and print its content from startLine to line represented by endLine
+
+			// Create a pointer that starts at head
+			Node currentPointer = searchLine(startLine);
+
+			// While the list isn't over
+			for (int i = startLine; i < startLine + 10; i++) {
+				if (i > endLine || i > len()) break;
+
+				System.out.printf("%3d|\t%s\n", i, currentPointer);
+				currentPointer = currentPointer.getNext();
+			}
+		}
+	}
 
 	public Node getHead() { return head; }
 
 	public Node getTail() { return tail; }
-	
+
+	public int len() { return count; }
+
 	@Override
 	public String toString() {
 		if (head == null) {
@@ -181,7 +216,7 @@ public class List {
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append("count: " + count + '\n');
-		
+
 		do {
 			sb.append(aux).append(" ->\n");
 			aux = aux.getNext();

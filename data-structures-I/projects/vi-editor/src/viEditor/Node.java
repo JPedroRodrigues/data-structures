@@ -27,13 +27,8 @@ public class Node {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb
-			.append("data: ")
-			.append(data)
-			.append(", next(id): ")
-			.append(next == null? "null" : next.getData())
-			.append(", previous(id): ")
-			.append(previous == null? "null" : previous.getData());
+
+		sb.append(data);
 		
 		return sb.toString();
 	}
