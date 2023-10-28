@@ -108,6 +108,63 @@ public class List {
 	}
 
 	// remove
+	public boolean removeLine(int line) {
+		if (isEmpty()) return false;
+
+		// Initializing a current and previous pointers
+		Node currPointer = head;
+		Node prevPointer;
+
+		int index = 0;
+
+		// Iterates through the list until the given line is reached
+		do {
+			prevPointer = currPointer;
+			currPointer = currPointer.getNext();
+			++index;
+		} while (index != line);
+
+		// If the given line is the first
+		if (index == 1) {
+			// There will be a new head
+			head = currPointer;
+
+			// prevPointer is the previous head, so it will be pointing to null
+			// since it's going to be removed
+			prevPointer.setNext(null);
+			prevPointer.setPrevious(null);
+
+			// New head and the actual tail will be pointing to each other
+			head.setPrevious(tail);
+			tail.setNext(head);
+		} else if (index == count) {
+			// tail is set to a past node and connects again with the head
+			tail = prevPointer.getPrevious();
+			tail.setNext(head);
+
+			head.setPrevious(tail);
+
+			// terminating connections of the deleted node
+			prevPointer.setPrevious(null);
+			prevPointer.setNext(null);
+		} else {
+			// new node to store the previous node from prevNode
+			Node temp = prevPointer.getPrevious();
+
+			// the currPointer is pointing to the temp as its previous node
+			// the next temp's node is now the currPointer
+			currPointer.setPrevious(temp);
+			temp.setNext(currPointer);
+
+			// cutting connections of the deleted node
+			prevPointer.setNext(null);
+			prevPointer.setPrevious(null);
+		}
+
+		--count;
+		return true;
+	}
+
 	// search
 
 	public Node getHead() { return head; }
