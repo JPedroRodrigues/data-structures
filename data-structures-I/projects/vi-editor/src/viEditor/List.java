@@ -192,6 +192,24 @@ public class List {
 		}
 	}
 
+    public boolean searchElement(String element) {
+        if (isEmpty()) return false;
+
+        Node node = head;
+        int line = 1;
+        boolean found = false;
+
+        while (node.getNext() != head) {
+            if (node.getData().contains(element)) {
+                System.out.printf("%3d|\t%s\n", line, node);
+                found = true;
+            }
+            node = node.getNext();
+            ++line;
+        }
+        return found;
+    }
+
 	public Node getHead() { return head; }
 
 	public Node getTail() { return tail; }

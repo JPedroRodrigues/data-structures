@@ -201,7 +201,18 @@ public class Main {
                 }
 
                 case '/' -> {
+                    String[] command = cmd.split(" ");
+                    String element = command[1];
 
+                    if (list.isEmpty()) System.out.println("Please, read the file to run this option.");
+
+                    if (command.length == 2) {
+                       System.out.printf("Finding \"%s\" element...\n", element);
+
+                        if (!list.searchElement(element)) {
+                            System.out.printf("There's no \"%s\" element in the code.\n", element);
+                        }
+                    }
                 }
 
                 case 'a' -> {
