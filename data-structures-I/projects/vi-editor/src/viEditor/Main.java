@@ -81,7 +81,7 @@ public class Main {
 
                 case 's' -> {
                     if (list.isEmpty()) {
-                        System.out.println("Please, read the file to print its content.");
+                        System.out.println("Please, read the file to run this option.");
                         continue;
                     }
 
@@ -134,6 +134,11 @@ public class Main {
                 }
 
                 case 'x' -> {
+                    if (list.isEmpty()) {
+                        System.out.println("Please, read the file to run this option.");
+                        continue;
+                    }
+
                     // Placing all the command elements into an array
                     String[] command = cmd.split(" ");
 
@@ -169,6 +174,11 @@ public class Main {
                 }
 
                 case 'X' -> {
+                    if (list.isEmpty()) {
+                        System.out.println("Please, read the file to run this option.");
+                        continue;
+                    }
+
                     // Placing all the command elements into an array
                     String[] command = cmd.split(" ");
 
@@ -202,16 +212,41 @@ public class Main {
 
                 case '/' -> {
                     String[] command = cmd.split(" ");
-                    String element = command[1];
+                    String element;
+                    String replacement;
 
-                    if (list.isEmpty()) System.out.println("Please, read the file to run this option.");
+                    if (list.isEmpty()) {
+                        System.out.println("Please, read the file to run this option.");
+                        continue;
+                    }
 
                     if (command.length == 2) {
-                       System.out.printf("Finding \"%s\" element...\n", element);
+                       element = command[1];
+                       System.out.printf("Searching for \"%s\" element...\n", element);
 
-                        if (!list.searchElement(element)) {
-                            System.out.printf("There's no \"%s\" element in the code.\n", element);
+                        if (list.searchElement(element)) {
+                            System.out.printf("\n\"%s\" found with success.\n", element);
+                        } else {
+                            System.out.printf("\nThere's no \"%s\" element in the code.\n", element);
                         }
+                    } else if (command.length == 3) {
+                        element = command[1];
+                        replacement = command[2];
+
+                        System.out.printf(
+                                "Searching for \"%s\" element and replacing it with \"%s\"...\n", element, replacement
+                        );
+
+                        if (list.replaceElement(element, replacement)) {
+                            System.out.println("\nAll lines updated with success.\n");
+                        } else {
+                            System.out.printf("\nThere's no \"%s\" element in the code.\n", element);
+                        }
+
+                    } else {
+                        System.out.println(
+                                "Invalid option. Please, check out :help to see all the supported commands"
+                        );
                     }
                 }
 

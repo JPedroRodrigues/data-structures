@@ -207,8 +207,31 @@ public class List {
             node = node.getNext();
             ++line;
         }
+
         return found;
     }
+
+	public boolean replaceElement(String element, String replacement) {
+		if (isEmpty()) return false;
+
+		Node node = head;
+		int line = 1;
+		boolean replaced = false;
+
+		while (node.getNext() != head) {
+			if (node.getData().contains(element)) {
+				node.setData(node.getData().replace(element, replacement));
+				System.out.printf("%3d|\t%s\n", line, node);
+				System.out.println("\n");
+
+				replaced = true;
+			}
+			node = node.getNext();
+			++line;
+		}
+
+		return replaced;
+	}
 
 	public Node getHead() { return head; }
 
