@@ -3,6 +3,8 @@
  * Sabrina Midori Futami Teixeira de Carvalho       10410220
  * Turma: 04G11
  * Referência: materiais de aula do Professor André Kishimoto
+ *      - https://profkishimoto.github.io/edii04g11-2024-1/conteudo/semana-2/EDII-POO_Heranca_Java.pdf
+ *      - https://profkishimoto.github.io/edii04g11-2024-1/conteudo/semana-2/ExemploEmAula-04G11-Pessoa.zip
  */
 
 public class Truck extends LandVehicle {

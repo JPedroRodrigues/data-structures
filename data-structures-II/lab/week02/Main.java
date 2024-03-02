@@ -3,6 +3,8 @@
  * Sabrina Midori Futami Teixeira de Carvalho       10410220
  * Turma: 04G11
  * Referência: materiais de aula do Professor André Kishimoto
+ *      - https://profkishimoto.github.io/edii04g11-2024-1/conteudo/semana-2/EDII-POO_Heranca_Java.pdf
+ *      - https://profkishimoto.github.io/edii04g11-2024-1/conteudo/semana-2/ExemploEmAula-04G11-Pessoa.zip
  */
 
 public class Main {
@@ -21,24 +23,23 @@ public class Main {
 
         System.out.println("\n=========================================================================\n");
         System.out.println("A) List of Vehicles\n");
+
         for (var v : lv) {
-            if (v instanceof PassengerCar) {
-                System.out.println("* " + v);
-            } else if (v instanceof Truck) {
-                System.out.println("* " + v);
-            }
+            if (v instanceof PassengerCar) System.out.println("* " + v);
+            else if (v instanceof Truck) System.out.println("* " + v);
         }
 
         System.out.println("\n=========================================================================\n");
         System.out.println("B) Passenger cars with 5 or more passenger seats and year less than 2010\n");
+
         for (var v: lv) {
-            if ((v instanceof PassengerCar) && (((PassengerCar)v).getPassengers() >= 5) && (v.getYear() < 2010)) {
+            if ((v instanceof PassengerCar) && (((PassengerCar)v).getPassengers() >= 5) && (v.getYear() < 2010))
                 System.out.println("* " + v);
-            }
         }
 
         System.out.println("\n=========================================================================\n");
         System.out.println("C) Total of green trucks with 4 axles\n");
+
         int truckSum = 0;
 
         for (var v : lv) {
