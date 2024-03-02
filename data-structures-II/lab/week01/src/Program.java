@@ -28,11 +28,7 @@ public class Program {
                 opt = s.nextLine();
                 try {
                     option = Integer.parseInt(opt);
-
-                    if (option < 1 || option > 3) {
-                        System.out.print("\nInvalid option. Value must be between 1-3. Try again.\nOption: ");
-                    }
-
+                    if (option < 1 || option > 3) { System.out.println("\nInvalid option. Value must be between 1-3. Try again."); }
                 } catch (NumberFormatException e) {
                     System.out.println(e.getMessage());
                     System.out.print("\nInvalid option. Value must be between 1-3. Try again.\nOption: ");
@@ -85,12 +81,12 @@ public class Program {
 
     public static void showMenu() {
         System.out.print("""
-        ============================================\s
+        =====================================================\s
         1. Load data
         2. Show data
         3. Exit
         
-        Option: \s""");
+        Option:\s""");
     }
 
     public static String loadTextFileToString(String filename) throws FileNotFoundException, IOException {
