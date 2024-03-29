@@ -1,6 +1,5 @@
 /* Atividade Árvore Binária
  * João Pedro Rodrigues Vieira         10403595
- * Sabrina Midori F. T. de Carvalho    10410220
  * Estrutura de Dados II - Turma 04G11
  * Prof. André Kishimoto
  *
@@ -90,6 +89,12 @@ public class Program {
         // Removing a node with two children
         System.out.println("Removing node 15, with two children");
         bst.remove("15");
+        bst.inOrderTraversal();
+
+        // Removing root
+        System.out.println("Removing node 30, with two children");
+        bst.remove("30");
+        bst.preOrder();
         bst.inOrderTraversal();
 
         // Removing a node that doesn't exist

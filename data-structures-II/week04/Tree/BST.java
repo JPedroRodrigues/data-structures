@@ -1,6 +1,5 @@
 /* Atividade Árvore Binária
  * João Pedro Rodrigues Vieira         10403595
- * Sabrina Midori F. T. de Carvalho    10410220
  * Estrutura de Dados II - Turma 04G11
  * Prof. André Kishimoto
  */
@@ -49,8 +48,8 @@ public class BST<T extends Comparable <T>> extends BinaryTree<T> {
         }
         else {
             if (node.getLeft() == null) {
-                child.setParent(node);
                 node.setLeft(child);
+                child.setParent(node);
             } else insert(node.getLeft(), data);
         }
     }
@@ -74,6 +73,7 @@ public class BST<T extends Comparable <T>> extends BinaryTree<T> {
 
                 predecessor.setLeft(node.getLeft());
                 predecessor.setRight(node.getRight());
+                setRoot(predecessor);
 
                 node.setLeft(null);
                 node.setRight(null);

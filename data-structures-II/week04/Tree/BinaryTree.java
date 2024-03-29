@@ -1,6 +1,5 @@
 /* Atividade Árvore Binária
  * João Pedro Rodrigues Vieira         10403595
- * Sabrina Midori F. T. de Carvalho    10410220
  * Estrutura de Dados II - Turma 04G11
  * Prof. André Kishimoto
  */
