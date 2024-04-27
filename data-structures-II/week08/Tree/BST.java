@@ -110,21 +110,63 @@ public class BST extends BinaryTree {
     }
 
     public Node findPredecessor(int data) {
-        if (isEmpty()) return null;
-
         Node node = search(data);
+        if (node == null) return null;
 
-        if (node.getLeft() == null) return node;
-        else return findMax(node.getLeft());
+        // If node is the min value of the tree there is no predecessor
+        if (data == findMin().getData()) return null;
+
+        // If node does not have left subtree
+        if (node.getLeft() == null) {
+            // If parent's data is smaller than data, predecessor is node's parent
+            if (node.getParent().getData() < data) return node.getParent();
+            // If parent's data is bigger than data, go up in the tree
+            else {
+                while (node.getParent() != null) {
+                    if (node.getParent().getData() < data) return node.getParent();
+                    else node = node.getParent();
+                }
+                // If node doesn't have predecessor
+                return null;
+            }
+
+        // If node has left subtree
+        } else return findPredecessor(node.getLeft());
+    }
+
+    private Node findPredecessor(Node node) {
+        if (node.getRight() == null) return node;
+        return findPredecessor(node.getRight());
     }
 
     public Node findSuccessor(int data) {
-        if (isEmpty()) return null;
-
         Node node = search(data);
+        if (node == null) return null;
 
-        if (node.getRight() == null) return node;
-        else return findMin(node.getRight());
+        // If node is the max value of the tree there is no successor
+        if (data == findMax().getData()) return null;
+
+        // If node does not have right subtree
+        if (node.getRight() == null) {
+            // If parent's data is bigger than data, successor is node's parent
+            if (node.getParent().getData() > data) return node.getParent();
+            // If parent's data is smaller than data, go up in the tree
+            else {
+                while (node.getParent() != null) {
+                    if (node.getParent().getData() > data) return node.getParent();
+                    else node = node.getParent();
+                }
+                // If node doesn't have successor
+                return null;
+            }
+
+        // If node has right subtree
+        } else return findSuccessor(node.getRight());
+    }
+
+    private Node findSuccessor(Node node) {
+        if (node.getLeft() == null) return node;
+        return findSuccessor(node.getLeft());
     }
 
     public Node findMin() {
