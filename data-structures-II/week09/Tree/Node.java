@@ -22,8 +22,20 @@ public class Node {
         this.balanceFactor = getBalanceFactor();
     }
 
-    public Node(int data) { this(data, null, null, null); this.balanceFactor = getBalanceFactor(); }
-    public Node() { this(0, null, null, null); this.balanceFactor = getBalanceFactor(); }
+    public Node(int data) { 
+        this.data = data;
+        this.left = null;
+        this.right = null;
+        this.parent = null;
+        this.balanceFactor = getBalanceFactor();
+     }
+    public Node() { 
+        this.data = 0;
+        this.left = null;
+        this.right = null;
+        this.parent = null;
+        this.balanceFactor = getBalanceFactor(); 
+    }
 
     public int getData() { return data; }
     public int getBalanceFactor() { updateBalanceFactor(); return balanceFactor; }

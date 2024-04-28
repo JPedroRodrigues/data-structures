@@ -14,98 +14,37 @@ import Tree.*;
 public class Main {
     public static void main(String[] args) {
         AVL avl = new AVL();
-
-        // 1st case
-        avl.insert(1);
-        avl.insert(2);
+        
+        // 5, 4, 3, 1, 2, 6, 7, 9, 8
+        avl.insert(5);
+        avl.preOrderTraversal();
+        
+        avl.insert(4);
+        avl.preOrderTraversal();
+        
         avl.insert(3);
-
-        System.out.println("|=================================================|");
-        System.out.println("AVL before rebalancing (pre-order traversal):");
         avl.preOrderTraversal();
-
-        System.out.println(avl.search(1));
-        System.out.println(avl.search(2));
-        System.out.println(avl.search(3));
-
-        System.out.println("After rebalancing with Left Rotation:");
-        avl.rotateLeft(avl.getRoot());
-        avl.preOrderTraversal();
-
-        System.out.println(avl.search(1));
-        System.out.println(avl.search(2));
-        System.out.println(avl.search(3));
-
-        avl.clear();
-
-
-        // 2nd case
-        avl.insert(3);
-        avl.insert(2);
+        
         avl.insert(1);
-
-        System.out.println("|=================================================|");
-        System.out.println("AVL before rebalancing (pre-order traversal):");
         avl.preOrderTraversal();
-
-        System.out.println(avl.search(1));
-        System.out.println(avl.search(2));
-        System.out.println(avl.search(3));
-
-        System.out.println("After rebalancing with Right Rotation:");
-        avl.rotateRight(avl.getRoot());
-        avl.preOrderTraversal();
-
-        System.out.println(avl.search(1));
-        System.out.println(avl.search(2));
-        System.out.println(avl.search(3));
-
-        avl.clear();
-
-        // 3rd case
-        avl.insert(3);
-        avl.insert(1);
+        
         avl.insert(2);
-
-        System.out.println("|=================================================|");
-        System.out.println("AVL before rebalancing (pre-order traversal):");
         avl.preOrderTraversal();
-
-        System.out.println(avl.search(1));
-        System.out.println(avl.search(2));
-        System.out.println(avl.search(3));
-
-        System.out.println("After rebalancing with Left-Right Rotation:");
-        avl.rotateLeftRight(avl.getRoot());
+        
+        avl.insert(6);
         avl.preOrderTraversal();
-
-        System.out.println(avl.search(1));
-        System.out.println(avl.search(2));
-        System.out.println(avl.search(3));
-
-        avl.clear();
-
-        // 4th case
-        avl.insert(1);
-        avl.insert(3);
-        avl.insert(2);
-
-        System.out.println("|=================================================|");
-        System.out.println("AVL before rebalancing (pre-order traversal):");
+        
+        avl.insert(7);
         avl.preOrderTraversal();
-
-        System.out.println(avl.search(1));
-        System.out.println(avl.search(2));
-        System.out.println(avl.search(3));
-
-        System.out.println("After rebalancing with Right-Left Rotation: ");
-        avl.rotateRightLeft(avl.getRoot());
+        
+        avl.insert(9);
         avl.preOrderTraversal();
-
-        System.out.println(avl.search(1));
-        System.out.println(avl.search(2));
-        System.out.println(avl.search(3));
-
-        avl.clear();
+        
+        avl.insert(8);
+        avl.preOrderTraversal();
+        
+        avl.preOrderNode();
+        avl.preOrderTraversal();
+        avl.inOrderTraversal();
     }
 }

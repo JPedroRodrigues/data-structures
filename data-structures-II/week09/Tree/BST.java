@@ -31,7 +31,7 @@ public class BST extends BinaryTree {
         else insert(super.getRoot(), node);
     }
 
-    private void insert(Node root, Node node) throws RuntimeException {
+    protected void insert(Node root, Node node) throws RuntimeException {
         if (root.getLeft() == null && node.getData() < root.getData()) {
             root.setLeft(node);
             node.setParent(root);

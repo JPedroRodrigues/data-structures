@@ -67,6 +67,18 @@ public class BinaryTree {
         preOrderTraversal(root.getRight());
     }
 
+    public void preOrderNode() {
+        if (isEmpty()) System.out.println("Tree is empty.");
+        else preOrderNode(root);
+    }
+
+    private void preOrderNode(Node root) {
+        if (root == null) return;
+        System.out.println(root);
+        preOrderNode(root.getLeft());
+        preOrderNode(root.getRight());
+    }
+
     public void inOrderTraversal() {
         if (isEmpty()) System.out.println("Tree is empty.");
         inOrderTraversal(root);
