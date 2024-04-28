@@ -1,6 +1,6 @@
 # Run project
 
-javac Default/Main.java
+javac Default/*.java -encoding utf8
 java Default/Main.java
 
 rm -if Default/*.class

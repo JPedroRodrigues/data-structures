@@ -119,15 +119,6 @@ public class AVL extends BST {
         } else return root;
     }
 
-
-    @Override
-    public void insert(int data) {
-        Node node = new Node(data);
-
-        if (isEmpty()) setRoot(node);
-        else insert(getRoot(), node);
-    }
-
     @Override
     protected void insert(Node root, Node node) throws RuntimeException {
         if (root.getLeft() == null && node.getData() < root.getData()) {
@@ -152,4 +143,86 @@ public class AVL extends BST {
             else newParent.setLeft(newRoot);
         }
     }
+
+    @Override
+    protected Node removeLeaf(Node node) {
+        if (node.isRoot()) setRoot(null);
+        else if (node.getData() > node.getParent().getData()) node.getParent().setRight(null);
+        else node.getParent().setLeft(null);
+
+        Node aux = node.getParent();
+        Node auxParent;
+
+        while (aux != null) {
+            aux = checkBalance(aux);
+            auxParent = aux.getParent();
+
+            if (auxParent != null) {
+                if (auxParent.getData() < aux.getData()) auxParent.setRight(aux);
+                else auxParent.setLeft(aux);
+            }
+            aux = aux.getParent();
+        }
+        
+        // Terminating all associations
+        node.setParent(null);
+        node.setLeft(null);
+        node.setRight(null);
+
+        return node;
+    }
+
+    @Override
+    protected Node removeOneDegreeNode(Node node) {
+        Node child;
+        if (node.isRoot()) {
+            if (node.getRight() != null) {
+                child = node.getRight();
+                setRoot(child);
+            }
+            else {
+                child = node.getLeft();
+                setRoot(child);
+            } 
+        } else if (node.getData() > node.getParent().getData()) {
+            if (node.getRight() != null) {
+                child = node.getRight();
+                node.getParent().setRight(child);
+            }
+            else {
+                child = node.getLeft();
+                node.getParent().setRight(node.getLeft());
+            }
+        } else {
+            if (node.getRight() != null) {
+                child = node.getRight();
+                node.getParent().setLeft(node.getRight());
+            }
+            else {
+                child = node.getLeft();
+                node.getParent().setLeft(node.getLeft());
+            }
+        }
+        child.setParent(node.getParent());
+        Node childParent;
+
+        while (child != null) {
+            child = checkBalance(child);
+            childParent = child.getParent();
+
+            if (childParent != null) {
+                if (childParent.getData() < child.getData()) childParent.setRight(child);
+                else childParent.setLeft(child);
+            }
+            child = child.getParent();
+        }
+
+        // Terminating all associations
+        node.setParent(null);
+        node.setLeft(null);
+        node.setRight(null);
+
+        return node;
+    }
+
 }

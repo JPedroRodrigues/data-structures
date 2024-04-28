@@ -60,7 +60,7 @@ public class BST extends BinaryTree {
         else return removeTwoDegreeNode(node);
     }
 
-    private Node removeLeaf(Node node) {
+    protected Node removeLeaf(Node node) {
         if (node.isRoot()) setRoot(null);
         else if (node.getData() > node.getParent().getData()) node.getParent().setRight(null);
         else node.getParent().setLeft(null);
@@ -73,18 +73,39 @@ public class BST extends BinaryTree {
         return node;
     }
 
-    private Node removeOneDegreeNode(Node node) {
+    protected Node removeOneDegreeNode(Node node) {
+        Node child;
         if (node.isRoot()) {
-            if (node.getRight() != null) setRoot(node.getRight());
-            else setRoot(node.getLeft());
+            if (node.getRight() != null) {
+                child = node.getRight();
+                setRoot(child);
+            }
+            else {
+                child = node.getLeft();
+                setRoot(child);
+            } 
         } else if (node.getData() > node.getParent().getData()) {
-            if (node.getRight() != null) node.getParent().setRight(node.getRight());
-            else node.getParent().setRight(node.getLeft());
+            if (node.getRight() != null) {
+                child = node.getRight();
+                node.getParent().setRight(child);
+            }
+            else {
+                child = node.getLeft();
+                node.getParent().setRight(node.getLeft());
+            }
         } else {
-            if (node.getRight() != null) node.getParent().setLeft(node.getRight());
-            else node.getParent().setLeft(node.getLeft());
+            if (node.getRight() != null) {
+                child = node.getRight();
+                node.getParent().setLeft(node.getRight());
+            }
+            else {
+                child = node.getLeft();
+                node.getParent().setLeft(node.getLeft());
+            }
         }
 
+        child.setParent(node.getParent());
+        
         // Terminating all associations
         node.setParent(null);
         node.setLeft(null);
@@ -95,18 +116,23 @@ public class BST extends BinaryTree {
 
     private Node removeTwoDegreeNode(Node node) {
         Node predecessor = findPredecessor(node.getData());
-        Node aux = predecessor;
+        int aux = node.getData();
 
-        predecessor.setParent(node.getParent());
-        predecessor.setLeft(node.getLeft());
-        predecessor.setRight(node.getRight());
+        node.setData(predecessor.getData());
+        predecessor.setData(aux);
 
-        node.setParent(aux.getParent());
-        node.setLeft(aux.getLeft());
-        node.setRight(aux.getRight());
+        // Node aux = predecessor;
 
-        if (node.isLeaf()) return removeLeaf(node);
-        else return removeOneDegreeNode(node);
+        // predecessor.setParent(node.getParent());
+        // predecessor.setLeft(node.getLeft());
+        // predecessor.setRight(node.getRight());
+
+        // node.setParent(aux.getParent());
+        // node.setLeft(aux.getLeft());
+        // node.setRight(aux.getRight());
+
+        if (predecessor.isLeaf()) return removeLeaf(predecessor);
+        else return removeOneDegreeNode(predecessor);
     }
 
     public Node findPredecessor(int data) {
