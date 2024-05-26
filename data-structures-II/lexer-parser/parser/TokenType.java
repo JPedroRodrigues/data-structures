@@ -1,0 +1,17 @@
+package parser;
+
+public enum TokenType {
+	
+	DATA,
+	SCOPE,
+	KEY,
+	COMMENT,
+	STRING,
+	KEY_SYMBOL,
+	OPEN_PARENTESIS,
+	CLOSE_PARENTESIS,
+	WHITESPACE,
+	NEWLINE,
+	EOF
+
+}
