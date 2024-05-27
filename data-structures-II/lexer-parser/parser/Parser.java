@@ -1,6 +1,8 @@
 package parser;
 
+import java.util.ArrayList;
 import java.util.List;
+import Tree.*;
 
 //================================================================================
 //  GRAMMAR
@@ -27,27 +29,50 @@ public class Parser {
 	private List<Token> tokens;
 	private Token currToken;
 	private int index;
+    private List<String> path;
+    AVL avl;
+    BST bst;
 
 	public Parser() {
+        // Parser related variables
 		tokens = null;
 		currToken = null;
 		index = -1;
+
+        // Tree related variables
+        path = null;
+        avl = null;
+        bst = null;
 	}
 	
-	public void run(List<String> contents) {
+	public BinaryTree[] run(List<String> contents) {
+        // Creating the Tree's root
+        avl = new AVL();
+        bst = new BST();
+        path = new ArrayList<>();
+        path.add("~");
+        
+        avl.insert(new Node(String.join("/", path), TokenType.SCOPE.toString()));
+        bst.insert(new Node(String.join("/", path), TokenType.SCOPE.toString()));
+
+        // Receiving tokens to start the validation
 		Tokenizer tokenizer = new Tokenizer();
 		tokens = tokenizer.tokenize(contents);
 		currToken = null;
 		index = -1;
 
 		// Uncomment this code below to show the currently stored tokens
-		System.out.println("==================== TOKENS ====================");
-		for (var token : tokens) {
-			System.out.println(token);
-		}
-		System.out.println("==================== TOKENS ====================");
+		// System.out.println("==================== TOKENS ====================");
+		// for (var token : tokens) {
+		// 	System.out.println(token);
+		// }
+		// System.out.println("==================== TOKENS ====================");
 		
 		parse();
+
+        // Returning both AVL and BST trees
+        BinaryTree[] treeArray = {avl, bst};
+        return treeArray;
 	}
 	
 	// Parse advances to the first token and then validates the data rule
@@ -104,6 +129,45 @@ public class Parser {
             throw new RuntimeException("Identifier is Empty.");
         }
 
+        // Compute the identifier as the name of node and build its path
+        // if (avl.isEmpty() && bst.isEmpty()) {
+        //     path.add("~");
+        // }
+
+        // Common order
+        // path.addLast(identifier.toString().trim());
+
+        // avl.insert(
+        //     new Node(
+        //         String.join("/", path),
+        //         TokenType.SCOPE.toString()
+        //     )
+        // );
+
+        // bst.insert(
+        //     new Node(
+        //         String.join("/", path),
+        //         TokenType.SCOPE.toString()
+        //     )
+        // );
+
+        // Reverse order
+        path.addFirst(identifier.toString().trim());
+
+        avl.insert(
+            new Node(
+                String.join("/", path),
+                TokenType.SCOPE.toString()
+            )
+        );
+
+        bst.insert(
+            new Node(
+                String.join("/", path),
+                TokenType.SCOPE.toString()
+            )
+        );
+
         // If code reaches this line, then it has a valid identifier
         scopeSB.append(identifier.toString());
 
@@ -123,6 +187,13 @@ public class Parser {
         scopeSB.setLength(0);
 
         data();
+
+        // Removing the already used SCOPE in the path
+        // Common order
+        // path.removeLast();
+
+        // Reverser order
+        path.removeFirst();
 
         // Consume 0+ WHITESPACE tokens
         while (currToken.getType() == TokenType.WHITESPACE) {
@@ -157,7 +228,7 @@ public class Parser {
             throw new RuntimeException("Identifier is Empty.");
         }
         
-        identifier.append(currToken.getValue());
+        // identifier.append(currToken.getValue());
         consume(TokenType.KEY_SYMBOL);
 
         // Read the both value STRING and WHITESPACE
@@ -174,8 +245,59 @@ public class Parser {
             throw new RuntimeException("Value is Empty.");
         }
 
-        // If the program reaches this part, then the key has both valid identifier and key
-        System.out.print(identifier.toString() + value.toString());
+        // If our program reaches this part, then the key has both valid identifier and key
+        // Inserting the new key in the AVL and BST trees
+        // if (avl.isEmpty() && bst.isEmpty()) {
+        //     path.add("~");
+        // }
+
+        // Common order
+        // path.addLast(identifier.toString().trim());
+
+        // avl.insert(
+        //     new Node(
+        //         String.join("/", path),
+        //         TokenType.KEY.toString(),
+        //         value.toString().trim()
+        //     )
+        // );
+
+        // bst.insert(
+        //     new Node(
+        //         String.join("/", path),
+        //         TokenType.KEY.toString(),
+        //         value.toString().trim()
+        //     )
+        // );
+
+        // Inserting the new key in the AVL and BST trees
+        // Reverser order
+        path.addFirst(identifier.toString().trim());
+
+        avl.insert(
+            new Node(
+                String.join("/", path),
+                TokenType.KEY.toString(),
+                value.toString().trim()
+            )
+        );
+
+        bst.insert(
+            new Node(
+                String.join("/", path),
+                TokenType.KEY.toString(),
+                value.toString().trim()
+            )
+        );
+
+        // Removing the already used Key in the path
+        // Common order
+        // path.removeLast();
+
+        // Reverse order
+        path.removeFirst();
+
+        System.out.print(identifier.toString() + "=" + value.toString());
 	}
 
 

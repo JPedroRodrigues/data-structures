@@ -104,25 +104,6 @@ public class Tokenizer {
 					}
 				
 				} else if (currChar == '=') {  // Recognize a KEY token
-					// // Create a stack to store the last line's identifier
-					// Token whitespace = new Token(null, "");
-
-					// // Check if theres a WHITESPACE before the equal sign
-					// if (tokenDeque.size() > 0 && tokenDeque.getLast().getType() == TokenType.WHITESPACE)
-					// 	whitespace = tokenDeque.removeLast();
-					
-					// StringBuilder identifierSB = new StringBuilder();
-					// while (
-					// 	tokenDeque.size() > 0 && 
-					// 	(tokenDeque.getFirst().getType() == TokenType.WHITESPACE || 
-					// 	tokenDeque.getFirst().getType() == TokenType.STRING)
-					// ) {
-					// 	identifierSB.append(tokenDeque.removeFirst().getValue());
-					// }
-
-					// if (!identifierSB.isEmpty()) tokenDeque.addLast(new Token(TokenType.STRING, identifierSB.toString()));
-					// if (whitespace.getType() != null) tokenDeque.addLast(whitespace); 
-
 					// Add a key symbol to maintain the order of writing
 					tokenDeque.addLast(new Token(TokenType.KEY_SYMBOL, currChar.toString()));
 					
