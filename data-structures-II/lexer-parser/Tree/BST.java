@@ -7,6 +7,8 @@
 
 package Tree;
 
+import javax.management.RuntimeErrorException;
+
 public class BST extends BinaryTree {
     private int size;
     public BST(Node root) { super(root); this.size = 0; }
@@ -25,6 +27,38 @@ public class BST extends BinaryTree {
         if (path.compareToIgnoreCase(root.getPath()) > 0) return search(root.getRight(), path);
         else if (path.compareToIgnoreCase(root.getPath()) < 0) return search(root.getLeft(), path);
         else return root;
+    }
+
+    public Node searchScope(String path) {
+        if (isEmpty()) throw new RuntimeException("BST.searchScope(): Tree is Empty.");
+        return searchScope(super.getRoot(), path);
+    }
+
+    private Node searchScope(Node root, String path) {
+        if (root == null) throw new RuntimeException("BST.searchScope(): Scope not found");
+
+        if (path.compareToIgnoreCase(root.getPath()) > 0) return searchScope(root.getRight(), path);
+        else if (path.compareToIgnoreCase(root.getPath()) < 0) return searchScope(root.getLeft(), path);
+        else {
+            if (root.getType().equals("SCOPE")) return root;
+            else throw new RuntimeException("BST.searchScope(): The data must be a scope");
+        }
+    }
+
+    public Node searchKey(String path) {
+        if (isEmpty()) throw new RuntimeException("BST.searchScope(): Tree is Empty.");
+        return searchKey(super.getRoot(), path);
+    }
+
+    private Node searchKey(Node root, String path) {
+        if (root == null) throw new RuntimeException("BST.searchKey(): Key not found");
+
+        if (path.compareToIgnoreCase(root.getPath()) > 0) return searchKey(root.getRight(), path);
+        else if (path.compareToIgnoreCase(root.getPath()) < 0) return searchKey(root.getLeft(), path);
+        else {
+            if (root.getType().equals("KEY")) return root;
+            else throw new RuntimeException("BST.searchKey(): The data must be a key");
+        }
     }
 
     public void searchNodes(String path) {
@@ -76,6 +110,18 @@ public class BST extends BinaryTree {
         if (isEmpty()) throw new RuntimeException("Tree is empty.");
 
         Node node = search(path);
+
+        if (node == null) throw new RuntimeException("Path not found.");
+
+        if (node.isLeaf()) return removeLeaf(node);
+        else if (node.getDegree() == 1) return removeOneDegreeNode(node);
+        else return removeTwoDegreeNode(node);
+    }
+
+    public Node removeKey(String path) throws RuntimeException {
+        if (isEmpty()) throw new RuntimeException("Tree is empty.");
+
+        Node node = searchKey(path);
 
         if (node == null) throw new RuntimeException("Path not found.");
 

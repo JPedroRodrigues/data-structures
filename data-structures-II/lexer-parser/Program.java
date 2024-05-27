@@ -1,5 +1,9 @@
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -120,9 +124,6 @@ public class Program {
 
 						if (keyOrScope == 0) continue;
 
-						System.out.print("Enter the name of your key/scope: ");
-						String identifier = s.nextLine().trim();
-
 						System.out.println("\n> Enter the scope path where you want your key/scope to be placed. Consider the example below");
 						System.out.println("\n~/scopeX/scopeY\n");
 						System.out.println("> The \"~\" symbol indicates the global scope.");
@@ -133,11 +134,13 @@ public class Program {
 						System.out.print("> Current file's paths: ");
 						avl.inOrderTraversal();
 						System.out.print("\nScope path: ");
-						String scope = s.nextLine().trim();
+						String scopePath = s.nextLine().trim();
+						String[] treadtedScopePath = scopePath.split("/");
+						scopePath = String.join("/", treadtedScopePath);
 						
 						try {
-							avl.search(scope);
-							bst.search(scope);
+							avl.searchScope(scopePath);
+							bst.searchScope(scopePath);
 						} catch (RuntimeException e) {
 							System.out.println("\n>>> Invalid scope path: " + e.getMessage());
 							System.out.println();
@@ -146,31 +149,34 @@ public class Program {
 
 						System.out.println("\n>>> Scope found successfuly!");
 
+						System.out.print("Enter the identifier name: ");
+						String identifier = s.nextLine().trim();
+						
 						if (keyOrScope == 1) {
 							System.out.print("Enter the value of the key: ");
 							String value = s.nextLine();
 
 							try {
-								avl.insert(new Node(scope.concat("/" + identifier), TokenType.KEY.toString(), value.trim()));
-								bst.insert(new Node(scope.concat("/" + identifier), TokenType.KEY.toString(), value.trim()));
+								avl.insert(new Node(scopePath.concat("/" + identifier), TokenType.KEY.toString(), value.trim()));
+								bst.insert(new Node(scopePath.concat("/" + identifier), TokenType.KEY.toString(), value.trim()));
 							} catch (RuntimeException e) {
 								System.out.println(e.getMessage());
 								continue;
 							}
 						} else {
 							try {
-								avl.insert(new Node(scope.concat("/" + identifier), TokenType.SCOPE.toString()));
-								bst.insert(new Node(scope.concat("/" + identifier), TokenType.KEY.toString()));
+								avl.insert(new Node(scopePath.concat("/" + identifier), TokenType.SCOPE.toString()));
+								bst.insert(new Node(scopePath.concat("/" + identifier), TokenType.SCOPE.toString()));
 							} catch (RuntimeException e) {
 								System.out.println(e.getMessage());
 								continue;
 							}
 						}
-						System.out.println(">>> Insertion made successfully");
-						System.out.println(">>> Node's data in AVL: ");
-						System.out.println(avl.search(scope.concat("/" + identifier)));
-						System.out.println(">>> Node's data in BST: ");
-						System.out.println(bst.search(scope.concat("/" + identifier)));
+						System.out.println("\n>>> Insertion made successfully");
+						System.out.println("\n>>> Node's data in BST: ");
+						System.out.println(bst.search(scopePath.concat("/" + identifier)));
+						System.out.println("\n>>> Node's data in AVL: ");
+						System.out.println(avl.search(scopePath.concat("/" + identifier)));
 					} else System.out.println("File not loaded. Please, provide a valid file and select option 1 to load the file's contents into memory.");
 				}
 
@@ -185,7 +191,47 @@ public class Program {
 						==============================================================
 						""");
 
+						System.out.println("\n> Enter the path of the key you want to be updated. Consider the example below");
+						System.out.println("\n~/scopeX/scopeY/key\n");
+						System.out.println("> The \"~\" symbol indicates the global scope.");
+						System.out.println("> To specify a more complex path, you need to, starting from the global scope (\"~\"), type a slash \"/\" followed by the name of the scope or key you want to access");
+						System.out.println("> Every complex path must start with a \"~/\", indicating its origin from de global scope");
+						System.out.println("> A path sould not end with a slash \"/\"");
+						System.out.print("> Current file's paths: ");
+						avl.inOrderTraversal();
 
+						System.out.print("\nKey path: ");
+						String keyPath = s.nextLine().trim();
+						String[] treatedKeyPath = keyPath.split("/");
+						keyPath = String.join("/", treatedKeyPath);
+						
+						try {
+							Node avlKey = avl.searchKey(keyPath);
+							Node bstKey = bst.searchKey(keyPath);
+
+							System.out.println("\n>>> Key found successfuly!");
+							System.out.println("\n>>> Node's data in BST: ");
+							System.out.println(bstKey);
+							System.out.println("\n>>> Node's data in AVL: ");
+							System.out.println(avlKey);
+							
+							System.out.print("Enter the new value of the key: ");
+							String value = s.nextLine();
+
+							avlKey.setValue(value);
+							bstKey.setValue(value);
+
+							System.out.println("\n>>> Update made successfully");
+							System.out.println("\n>>> Node's data in BST: ");
+							System.out.println(bstKey);
+							System.out.println("\n>>> Node's data in AVL: ");
+							System.out.println(avlKey);
+
+						} catch (RuntimeException e) {
+							System.out.println("\n>>> Invalid key path: " + e.getMessage());
+							System.out.println();
+							continue;
+						}
 					} else System.out.println("File not loaded. Please, provide a valid file and select option 1 to load the file's contents into memory.");
 				}
 
@@ -199,6 +245,43 @@ public class Program {
 								5. Remove a tree's key
 						==============================================================
 						""");
+
+						System.out.println("\n> Enter the path of the key you want to be removed. Consider the example below");
+						System.out.println("\n~/scopeX/scopeY/key\n");
+						System.out.println("> The \"~\" symbol indicates the global scope.");
+						System.out.println("> To specify a more complex path, you need to, starting from the global scope (\"~\"), type a slash \"/\" followed by the name of the scope or key you want to access");
+						System.out.println("> Every complex path must start with a \"~/\", indicating its origin from de global scope");
+						System.out.println("> A path sould not end with a slash \"/\"");
+						System.out.print("> Current file's paths: ");
+						avl.inOrderTraversal();
+
+						System.out.print("\nKey path: ");
+						String keyPath = s.nextLine().trim();
+						String[] treatedKeyPath = keyPath.split("/");
+						keyPath = String.join("/", treatedKeyPath);
+						
+						try {
+							Node avlKey = avl.removeKey(keyPath);
+							Node bstKey = bst.removeKey(keyPath);
+
+							System.out.println("\n>>> Key removed successfuly!");
+
+							System.out.println("\n>>> Content in both trees");
+							System.out.println("\n>>> BST: ");
+							System.out.print("BST in order: ");
+							bst.inOrderTraversal();
+							bst.inOrderNode();
+
+							System.out.println("\n>>> AVL: ");
+							System.out.print("AVL in order: ");
+							avl.inOrderTraversal();
+							avl.inOrderNode();
+
+						} catch (RuntimeException e) {
+							System.out.println("\n>>> Invalid key path: " + e.getMessage());
+							System.out.println();
+							continue;
+						}
 					} else System.out.println("File not loaded. Please, provide a valid file and select option 1 to load the file's contents into memory.");
 				}
 
@@ -212,6 +295,11 @@ public class Program {
 								6. Save data in a file
 						==============================================================
 						""");
+
+						// System.out.print("Enter the name of the \".ed2\" file in which you will save the content: ");
+						// String filePath = s.nextLine();
+						writeFile(avl, "output.ed2");
+
 					} else System.out.println("File not loaded. Please, provide a valid file and select option 1 to load the file's contents into memory.");
 				}
 
@@ -222,7 +310,7 @@ public class Program {
 						System.out.println("""
 
 						==============================================================
-								7. Show contents and properties of the BST
+							7. Show contents and properties of the BST
 						==============================================================
 						""");
 						System.out.println("> Tree stats:");
@@ -255,7 +343,7 @@ public class Program {
 						System.out.println("""
 
 						==============================================================
-								8. Show contents and properties of the AVL
+							8. Show contents and properties of the AVL
 						==============================================================
 						""");
 						System.out.println("> Tree stats:");
@@ -324,6 +412,64 @@ public class Program {
 		}
 
 		return ed2File;
+	}
+
+	public static boolean writeFile(AVL avl, String filePath) {
+
+        // Try-catch to open file and write tree's content on it
+        try (FileWriter fileWriter = new FileWriter(filePath);
+			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
+			
+			// Making an in-order printing
+			if (avl.isEmpty()) throw new RuntimeException("Unable to write tree's contents in the file: tree is empty");
+			
+			// Placing every node in order inside a list
+			List<Node> nodeList = new ArrayList<>();
+			inOrderStorage(avl.getRoot(), nodeList);
+			
+			// Keeping track of the number of tabs in order to build a readable text
+			int prevTabsNumber = 0;
+			int tabsNumber = 0;
+			
+			for (Node node : nodeList) {
+				tabsNumber = (node.getPath().split("/").length) - 2;
+
+				if (tabsNumber >= 0 && prevTabsNumber > tabsNumber) System.out.println(")");
+
+				for (int i = 0; i < tabsNumber; i++) System.out.print("\t");
+
+				if (node.getType().equals("SCOPE") && !node.getName().equals("~")) {
+					System.out.print(node.getName() + " (");
+					System.out.println();
+				} else if (node.getType().equals("KEY")) {
+					System.out.print(node.getName() + " = " + node.getValue());
+					System.out.println();
+				}
+
+				prevTabsNumber = tabsNumber;
+			}
+
+			bufferedWriter.close();
+            
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("Program.writeFile(): " + e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException("Program.writeFile(): " + e.getMessage());
+        }
+
+        return true;
+    }
+
+	public static void inOrderStorage(Node root, List<Node> nodeList) {
+		if (root == null) return;
+
+		// Acces the left child of root
+		inOrderStorage(root.getLeft(), nodeList);
+
+		nodeList.add(root);
+
+		// Acces the right child of root
+		inOrderStorage(root.getRight(), nodeList);
 	}
 
 	public static BinaryTree[] testParser(List<String> contents) {
