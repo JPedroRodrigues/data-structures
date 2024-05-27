@@ -120,45 +120,57 @@ public class Program {
 
 						if (keyOrScope == 0) continue;
 
-						System.out.print("Enter the name of your key/scope:");
+						System.out.print("Enter the name of your key/scope: ");
 						String identifier = s.nextLine().trim();
 
 						System.out.println("\n> Enter the scope path where you want your key/scope to be placed. Consider the example below");
-						System.out.println("> E.g.: scopeX/scopeY/~");
-						System.out.println("> Every path must end with a \"/~\", indicating the global scope");
-
-						System.out.print("Scope path: ");
+						System.out.println("\n~/scopeX/scopeY\n");
+						System.out.println("> The \"~\" symbol indicates the global scope.");
+						System.out.println("> To make insertion in the global scope, just type \"~\"");
+						System.out.println("> To specify a more complex path, you need to, starting from the global scope, write a slash \"/\" followed by the name of the scope");
+						System.out.println("> Every complex path must start with a \"~/\", indicating its origin from de global scope");
+						System.out.println("> A path sould not end with a slash \"/\"");
+						System.out.print("> Current file's paths: ");
+						avl.inOrderTraversal();
+						System.out.print("\nScope path: ");
 						String scope = s.nextLine().trim();
-
+						
 						try {
 							avl.search(scope);
 							bst.search(scope);
 						} catch (RuntimeException e) {
-							System.out.println("Invalid scope path: " + e.getMessage());
+							System.out.println("\n>>> Invalid scope path: " + e.getMessage());
+							System.out.println();
 							continue;
 						}
 
+						System.out.println("\n>>> Scope found successfuly!");
+
 						if (keyOrScope == 1) {
-							System.out.println("Enter the value of the key: ");
+							System.out.print("Enter the value of the key: ");
 							String value = s.nextLine();
 
 							try {
-								avl.insert(new Node(identifier.concat("/" + scope), TokenType.KEY.toString(), value.trim()));
-								bst.insert(new Node(identifier.concat("/" + scope), TokenType.KEY.toString(), value.trim()));
+								avl.insert(new Node(scope.concat("/" + identifier), TokenType.KEY.toString(), value.trim()));
+								bst.insert(new Node(scope.concat("/" + identifier), TokenType.KEY.toString(), value.trim()));
 							} catch (RuntimeException e) {
 								System.out.println(e.getMessage());
 								continue;
 							}
 						} else {
 							try {
-								avl.insert(new Node(identifier.concat("/" + scope), TokenType.SCOPE.toString()));
-								bst.insert(new Node(identifier.concat("/" + scope), TokenType.KEY.toString()));
+								avl.insert(new Node(scope.concat("/" + identifier), TokenType.SCOPE.toString()));
+								bst.insert(new Node(scope.concat("/" + identifier), TokenType.KEY.toString()));
 							} catch (RuntimeException e) {
 								System.out.println(e.getMessage());
 								continue;
 							}
 						}
-						System.out.println("> Insertion made successfully");
+						System.out.println(">>> Insertion made successfully");
+						System.out.println(">>> Node's data in AVL: ");
+						System.out.println(avl.search(scope.concat("/" + identifier)));
+						System.out.println(">>> Node's data in BST: ");
+						System.out.println(bst.search(scope.concat("/" + identifier)));
 					} else System.out.println("File not loaded. Please, provide a valid file and select option 1 to load the file's contents into memory.");
 				}
 
@@ -217,14 +229,20 @@ public class Program {
 						System.out.println("Tree's height: " + bst.getHeight());
 						System.out.println("Tree's degree: " + bst.getDegree());
 						System.out.println("Number of nodes: " + bst.getSize());
-
+						
 						System.out.println("\n> Pre-order traversal:\n");
+						System.out.print("Path sequence: ");
+						bst.preOrderTraversal();
 						bst.preOrderNode();
 
 						System.out.println("\n> In-order traversal:\n");
+						System.out.print("Path sequence: ");
+						bst.inOrderTraversal();
 						bst.inOrderNode();
 
 						System.out.println("\n> Post-order traversal:\n");
+						System.out.print("Path sequence: ");
+						bst.postOrderTraversal();
 						bst.postOrderNode();
 						
 					} else System.out.println("File not loaded. Please, provide a valid file and select option 1 to load the file's contents into memory.");
@@ -246,12 +264,18 @@ public class Program {
 						System.out.println("Number of nodes: " + avl.getSize());
 
 						System.out.println("\n> Pre-order traversal:\n");
+						System.out.print("Path sequence: ");
+						avl.preOrderTraversal();
 						avl.preOrderNode();
 
 						System.out.println("\n> In-order traversal:\n");
+						System.out.print("Path sequence: ");
+						avl.inOrderTraversal();
 						avl.inOrderNode();
 
 						System.out.println("\n> Post-order traversal:\n");
+						System.out.print("Path sequence: ");
+						avl.postOrderTraversal();
 						avl.postOrderNode();
 					} else System.out.println("File not loaded. Please, provide a valid file and select option 1 to load the file's contents into memory.");
 				}

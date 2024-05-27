@@ -135,24 +135,10 @@ public class Parser {
         // }
 
         // Common order
-        // path.addLast(identifier.toString().trim());
-
-        // avl.insert(
-        //     new Node(
-        //         String.join("/", path),
-        //         TokenType.SCOPE.toString()
-        //     )
-        // );
-
-        // bst.insert(
-        //     new Node(
-        //         String.join("/", path),
-        //         TokenType.SCOPE.toString()
-        //     )
-        // );
+        path.addLast(identifier.toString().trim());
 
         // Reverse order
-        path.addFirst(identifier.toString().trim());
+        // path.addFirst(identifier.toString().trim());
 
         avl.insert(
             new Node(
@@ -190,10 +176,10 @@ public class Parser {
 
         // Removing the already used SCOPE in the path
         // Common order
-        // path.removeLast();
+        path.removeLast();
 
         // Reverser order
-        path.removeFirst();
+        // path.removeFirst();
 
         // Consume 0+ WHITESPACE tokens
         while (currToken.getType() == TokenType.WHITESPACE) {
@@ -252,27 +238,10 @@ public class Parser {
         // }
 
         // Common order
-        // path.addLast(identifier.toString().trim());
+        path.addLast(identifier.toString().trim());
 
-        // avl.insert(
-        //     new Node(
-        //         String.join("/", path),
-        //         TokenType.KEY.toString(),
-        //         value.toString().trim()
-        //     )
-        // );
-
-        // bst.insert(
-        //     new Node(
-        //         String.join("/", path),
-        //         TokenType.KEY.toString(),
-        //         value.toString().trim()
-        //     )
-        // );
-
-        // Inserting the new key in the AVL and BST trees
         // Reverser order
-        path.addFirst(identifier.toString().trim());
+        // path.addFirst(identifier.toString().trim());
 
         avl.insert(
             new Node(
@@ -292,10 +261,10 @@ public class Parser {
 
         // Removing the already used Key in the path
         // Common order
-        // path.removeLast();
+        path.removeLast();
 
         // Reverse order
-        path.removeFirst();
+        // path.removeFirst();
 
         System.out.print(identifier.toString() + "=" + value.toString());
 	}

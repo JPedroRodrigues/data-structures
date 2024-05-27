@@ -15,16 +15,15 @@ public class BST extends BinaryTree {
     public int getSize() { return this.size; }
 
     public Node search(String path) {
-        if (isEmpty()) throw new RuntimeException("> BST.search(): Tree is Empty.");
+        if (isEmpty()) throw new RuntimeException("BST.search(): Tree is Empty.");
         return search(super.getRoot(), path);
     }
 
     private Node search(Node root, String path) {
-        if (root == null) throw new RuntimeException("> BST.search(): Node not found");
+        if (root == null) throw new RuntimeException("BST.search(): Node not found");
 
-        String[] rootPath = root.getPath().split("/");
-        if (path.compareToIgnoreCase(rootPath[0]) > 0) return search(root.getRight(), path);
-        else if (path.compareToIgnoreCase(rootPath[0]) < 0) return search(root.getLeft(), path);
+        if (path.compareToIgnoreCase(root.getPath()) > 0) return search(root.getRight(), path);
+        else if (path.compareToIgnoreCase(root.getPath()) < 0) return search(root.getLeft(), path);
         else return root;
     }
 
@@ -38,7 +37,7 @@ public class BST extends BinaryTree {
         if (root == null) return;
 
         String[] rootPath = root.getPath().split("/");
-        if (path.compareToIgnoreCase(rootPath[0]) == 0) {
+        if (path.compareToIgnoreCase(rootPath[rootPath.length - 1]) == 0) {
             System.out.println("Number of comparisons needed: " + findCount);
             System.out.println(root);
         }

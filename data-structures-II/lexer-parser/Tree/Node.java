@@ -20,7 +20,8 @@ public class Node {
 
     public Node(String path) { 
         this.path = path;
-        this.name = path.split("/")[0];
+        String[] name = path.split("/");
+        this.name = name[name.length - 1];
         this.value = null;
         this.type = null;
         this.left = null;
@@ -31,7 +32,8 @@ public class Node {
 
     public Node(String path, String type) { 
         this.path = path;
-        this.name = path.split("/")[0];
+        String[] name = path.split("/");
+        this.name = name[name.length - 1];
         this.type = type;
         this.value = null;
         this.left = null;
@@ -42,7 +44,8 @@ public class Node {
 
     public Node(String path, String type, String value) { 
         this.path = path;
-        this.name = path.split("/")[0];
+        String[] name = path.split("/");
+        this.name = name[name.length - 1];
         this.type = type;
         this.value =value;
         this.left = null;
