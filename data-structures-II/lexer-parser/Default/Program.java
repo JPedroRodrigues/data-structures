@@ -2,8 +2,9 @@
  * João Pedro Rodrigues Vieira         10403595
  * Sabrina Midori F. T. de Carvalho    10410220
  * Pedro Pessuto Rodrigues Ferreira    10409729
- * Estrutura de Dados II - Turma 04G11
- * Prof. André Kishimoto
+ * Data Structures II - Class 04G11
+ * Professor André Kishimoto
+ * References: Class material provided by Professor André Kishimoto
  */
 
 package Default;
