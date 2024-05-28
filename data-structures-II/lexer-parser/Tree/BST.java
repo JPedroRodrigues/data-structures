@@ -1,13 +1,12 @@
-/* APL2 - Lexer and Parser
+/* APL2 - Lexer & Parser
  * João Pedro Rodrigues Vieira         10403595
  * Sabrina Midori F. T. de Carvalho    10410220
+ * Pedro Pessuto Rodrigues Ferreira    10409729
  * Estrutura de Dados II - Turma 04G11
  * Prof. André Kishimoto
  */
 
 package Tree;
-
-import javax.management.RuntimeErrorException;
 
 public class BST extends BinaryTree {
     private int size;
@@ -41,7 +40,8 @@ public class BST extends BinaryTree {
         else if (path.compareToIgnoreCase(root.getPath()) < 0) return searchScope(root.getLeft(), path);
         else {
             if (root.getType().equals("SCOPE")) return root;
-            else throw new RuntimeException("BST.searchScope(): The data must be a scope");
+            else if (root.notDuplicated()) throw new RuntimeException("BST.searchScope(): The data must be a scope");
+            else return root.getDuplicated();
         }
     }
 
@@ -57,7 +57,8 @@ public class BST extends BinaryTree {
         else if (path.compareToIgnoreCase(root.getPath()) < 0) return searchKey(root.getLeft(), path);
         else {
             if (root.getType().equals("KEY")) return root;
-            else throw new RuntimeException("BST.searchKey(): The data must be a key");
+            else if (root.notDuplicated()) throw new RuntimeException("BST.searchKey(): The data must be a key");
+            else return root.getDuplicated();
         }
     }
 
@@ -74,6 +75,7 @@ public class BST extends BinaryTree {
         if (path.compareToIgnoreCase(rootPath[rootPath.length - 1]) == 0) {
             System.out.println("Number of comparisons needed: " + findCount);
             System.out.println(root);
+            if (!root.notDuplicated()) System.out.println(root.getDuplicated());
         }
 
         searchNodes(root.getLeft(), path, findCount + 1);
@@ -100,8 +102,14 @@ public class BST extends BinaryTree {
         if (node.getPath().compareToIgnoreCase(root.getPath()) > 0) insert(root.getRight(), node);
         else if (node.getPath().compareToIgnoreCase(root.getPath()) < 0) insert(root.getLeft(), node);
         else {
-            if (node.getType().equals("SCOPE")) throw new RuntimeException("Invalid insertion: scope already exists");
-            root.setValue(node.getValue());
+            if (node.getType().equals("SCOPE") && root.getType().equals("SCOPE")) throw new RuntimeException(">>> BST.insert(): Invalid insertion: scope already exists");
+            else if (node.getType().equals("KEY") && root.getType().equals("KEY")) root.setValue(node.getValue());
+            else {
+                // If both nodes have the same path but different types, then we add it in a list as a duplicated node
+                // unless the root already has a duplicated node
+                if (root.notDuplicated()) root.setDuplicated(node);
+                else throw new RuntimeException("There's already a data with the same name and type.");
+            }
         }
     }
 
@@ -121,7 +129,28 @@ public class BST extends BinaryTree {
     public Node removeKey(String path) throws RuntimeException {
         if (isEmpty()) throw new RuntimeException("Tree is empty.");
 
-        Node node = searchKey(path);
+        Node keyNode = searchKey(path);
+        Node node = search(path);
+
+        // If the key node found is a duplicate of other node,
+        // then we just need to remove it from the tree
+        if (keyNode.isLeaf() && keyNode.isRoot()) {
+            return node.removeDuplicated();
+        } else if (!keyNode.notDuplicated()) {
+            // If the key node has a duplicate, then we just
+            // need to update its attributes using its duplicate
+            Node removedNode = keyNode;
+
+            keyNode.setPath(keyNode.getDuplicated().getPath());
+            keyNode.setName(keyNode.getDuplicated().getName());
+            keyNode.setType(keyNode.getDuplicated().getType());
+            keyNode.setValue(keyNode.getDuplicated().getValue());
+            
+            // Since the duplicate took the position of the key node
+            // we just need to delete de duplicate from the list
+            keyNode.removeDuplicated();
+            return removedNode;
+        }
 
         if (node == null) throw new RuntimeException("Path not found.");
 
@@ -217,9 +246,10 @@ public class BST extends BinaryTree {
                 // If node doesn't have predecessor
                 return null;
             }
-
+            
         // If node has left subtree
         } else return findPredecessor(node.getLeft());
+        
     }
 
     private Node findPredecessor(Node node) {

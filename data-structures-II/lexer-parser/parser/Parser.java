@@ -1,3 +1,11 @@
+/* APL2 - Lexer & Parser
+ * João Pedro Rodrigues Vieira         10403595
+ * Sabrina Midori F. T. de Carvalho    10410220
+ * Pedro Pessuto Rodrigues Ferreira    10409729
+ * Estrutura de Dados II - Turma 04G11
+ * Prof. André Kishimoto
+ */
+
 package parser;
 
 import java.util.ArrayList;
@@ -101,7 +109,7 @@ public class Parser {
 			consume(TokenType.NEWLINE);
 			
 			// Processing NEWLINE token type as a new line print
-			System.out.println();			
+			// System.out.println();			
 			
 			type = currToken.getType();
 		}
@@ -169,7 +177,7 @@ public class Parser {
         scopeSB.append(currToken.getValue());
         consume(TokenType.NEWLINE);
 
-        System.out.print(scopeSB.toString());
+        // System.out.print(scopeSB.toString());
         scopeSB.setLength(0);
 
         data();
@@ -190,7 +198,7 @@ public class Parser {
         scopeSB.append(currToken.getValue());
         consume(TokenType.CLOSE_PARENTESIS);
 
-        System.out.print(scopeSB.toString());
+        // System.out.print(scopeSB.toString());
 	}
 	
 
@@ -266,7 +274,7 @@ public class Parser {
         // Reverse order
         // path.removeFirst();
 
-        System.out.print(identifier.toString() + "=" + value.toString());
+        // System.out.print(identifier.toString() + "=" + value.toString());
 	}
 
 
@@ -278,7 +286,7 @@ public class Parser {
         consume(TokenType.STRING);
 
         // If the program reaches this part, then the key has both valid identifier and key
-        System.out.print("#" + str);
+        // System.out.print("#" + str);
     }
 
 

@@ -1,0 +1,21 @@
+list = strings
+
+functionX = 666
+
+functionX (
+    function Y (
+        z = value0
+    )
+    x = value1
+    y = value2
+
+    functionZ (
+        functionAlpha(
+            functionOmega(
+
+            )
+        )
+    )
+)
+
+x = value3

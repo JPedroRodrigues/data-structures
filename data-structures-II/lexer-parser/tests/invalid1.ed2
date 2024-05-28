@@ -1,0 +1,5 @@
+# Arquivo com identificadores inválidos
+usuário (
+  nome usuário = valor # Valor inválido
+  email = joao@example.com
+)

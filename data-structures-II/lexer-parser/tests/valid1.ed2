@@ -1,0 +1,20 @@
+# Configuração do servidor
+servidor (
+  endereço = 192.168.1.1
+  porta = 8080
+  banco_de_dados (
+    nome = exemploDB
+    usuário = admin
+    senha = senha123
+  )
+)
+
+# Configuração do cliente
+cliente (
+  nome = Cliente Exemplo
+  email = cliente@example.com
+  preferências (
+    idioma = pt_BR
+    tema = claro
+  )
+)

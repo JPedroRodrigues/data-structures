@@ -1,8 +1,7 @@
-javac *.java
+javac Default/*.java
 
-java Program.java
+java Default/Program.java
 
-rm -if *.class
+rm -if Default/*.class
 rm -if parser/*.class
 rm -if Tree/*.class
-

@@ -1,6 +1,7 @@
-/* APL2 - Lexer-parser
+/* APL2 - Lexer & Parser
  * João Pedro Rodrigues Vieira         10403595
  * Sabrina Midori F. T. de Carvalho    10410220
+ * Pedro Pessuto Rodrigues Ferreira    10409729
  * Estrutura de Dados II - Turma 04G11
  * Prof. André Kishimoto
  */
@@ -134,8 +135,14 @@ public class AVL extends BST {
         if (node.getPath().compareToIgnoreCase(root.getPath()) > 0) insert(root.getRight(), node);
         else if (node.getPath().compareToIgnoreCase(root.getPath()) < 0) insert(root.getLeft(), node);
         else {
-            if (node.getType().equals("SCOPE")) throw new RuntimeException("Invalid insertion: scope already exists");
-            root.setValue(node.getValue());
+            if (node.getType().equals("SCOPE") && root.getType().equals("SCOPE")) throw new RuntimeException(">>> AVL.insert(): Invalid insertion: scope already exists");
+            else if (node.getType().equals("KEY") && root.getType().equals("KEY")) root.setValue(node.getValue());
+            else {
+                // If both nodes have the same path but different types, then we add it in a list as a duplicated node
+                // unless the root already has a duplicated node
+                if (root.notDuplicated()) root.setDuplicated(node);
+                else throw new RuntimeException("There's already a data with the same name and type.");
+            }
         }
 
         Node newRoot = checkBalance(root);

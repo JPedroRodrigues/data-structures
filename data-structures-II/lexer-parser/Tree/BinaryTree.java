@@ -1,6 +1,7 @@
-/* APL2 - Lexer and Parser
+/* APL2 - Lexer & Parser
  * João Pedro Rodrigues Vieira         10403595
  * Sabrina Midori F. T. de Carvalho    10410220
+ * Pedro Pessuto Rodrigues Ferreira    10409729
  * Estrutura de Dados II - Turma 04G11
  * Prof. André Kishimoto
  */
@@ -63,6 +64,7 @@ public class BinaryTree {
     private void preOrderTraversal(Node root) {
         if (root == null) return;
         System.out.print(root.getPath() + " ");
+        if (!root.notDuplicated()) System.out.print(root.getDuplicated().getPath() + " ");
         preOrderTraversal(root.getLeft());
         preOrderTraversal(root.getRight());
     }
@@ -75,6 +77,7 @@ public class BinaryTree {
     private void preOrderNode(Node root) {
         if (root == null) return;
         System.out.println(root);
+        if (!root.notDuplicated()) System.out.println(root.getDuplicated());
         preOrderNode(root.getLeft());
         preOrderNode(root.getRight());
     }
@@ -89,19 +92,21 @@ public class BinaryTree {
         if (root == null) return;
         inOrderTraversal(root.getLeft());
         System.out.print(root.getPath() + " ");
+        if (!root.notDuplicated()) System.out.print(root.getDuplicated().getPath() + " ");
         inOrderTraversal(root.getRight());
     }
 
     public void inOrderNode() {
         if (isEmpty()) System.out.println("Tree is empty.");
-        else preOrderNode(root);
+        else inOrderNode(root);
     }
 
     private void inOrderNode(Node root) {
         if (root == null) return;
-        preOrderNode(root.getLeft());
+        inOrderNode(root.getLeft());
         System.out.println(root);
-        preOrderNode(root.getRight());
+        if (!root.notDuplicated()) System.out.println(root.getDuplicated());
+        inOrderNode(root.getRight());
     }
 
     public void postOrderTraversal() {
@@ -115,17 +120,19 @@ public class BinaryTree {
         postOrderTraversal(root.getLeft());
         postOrderTraversal(root.getRight());
         System.out.print(root.getPath() + " ");
+        if (!root.notDuplicated()) System.out.print(root.getDuplicated().getPath() + " ");
     }
 
     public void postOrderNode() {
         if (isEmpty()) System.out.println("Tree is empty.");
-        else preOrderNode(root);
+        else postOrderNode(root);
     }
 
     private void postOrderNode(Node root) {
         if (root == null) return;
-        preOrderNode(root.getLeft());
-        preOrderNode(root.getRight());
+        postOrderNode(root.getLeft());
+        postOrderNode(root.getRight());
         System.out.println(root);
+        if (!root.notDuplicated()) System.out.println(root.getDuplicated());
     }
 }

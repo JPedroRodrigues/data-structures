@@ -1,0 +1,23 @@
+# Agenda de eventos
+evento1 (
+  nome = Reunião de Projeto
+  data = 2024-06-15
+  hora = 14:00
+  local = Sala de Reuniões 3
+  participantes (
+    participante1 = João
+    participante2 = Sabrina
+    participante3 = Pedro
+  )
+)
+
+evento2 (
+  nome = Workshop de Tecnologia
+  data = 2024-07-10
+  hora = 09:00
+  local = Auditório Principal
+  palestrantes (
+    palestrante1 = Dr. Kishmoto
+    palestrante2 = Profa. Sabrina
+  )
+)

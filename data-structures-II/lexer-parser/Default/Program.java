@@ -1,10 +1,20 @@
+/* APL2 - Lexer & Parser
+ * João Pedro Rodrigues Vieira         10403595
+ * Sabrina Midori F. T. de Carvalho    10410220
+ * Pedro Pessuto Rodrigues Ferreira    10409729
+ * Estrutura de Dados II - Turma 04G11
+ * Prof. André Kishimoto
+ */
+
+package Default;
+
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -37,7 +47,7 @@ import parser.TokenType;
 
 public class Program {
 	public static void main(String[] args) {
-		
+
 		showHeader();
 
         Scanner s = new Scanner(System.in);
@@ -59,22 +69,31 @@ public class Program {
 							      1. Load data from an \".ed2\" file
 						==============================================================
 						""");
-					// System.out.print("Enter the path of the .ed2 file: ");
-					// String filePath = s.nextLine();
+					System.out.print("Enter the path of the .ed2 file: ");
+					String filePath = s.nextLine();
 
-					// List<String> ed2File = readFile(filePath);
-					List<String> ed2File = readFile("validExample.ed2");
+					if (!filePath.contains(".ed2")) {
+						System.out.println("Invalid input file. It must be an \".ed2\" file.");
+						continue;
+					}
+
+					List<String> ed2File = readFile(filePath);
+					
+					// List<String> ed2File = readFile("validExample.ed2");
 
 					System.out.println("> File read with Success!\n");
-					BinaryTree[] binaryTrees = testParser(ed2File);
 
-					avl = (AVL) binaryTrees[0];
-					bst = (BST) binaryTrees[1];
+					
+					try {
+						BinaryTree[] binaryTrees = testParser(ed2File);
 
-					avl.inOrderTraversal();
-					bst.inOrderTraversal();
+						avl = (AVL) binaryTrees[0];
+						bst = (BST) binaryTrees[1];
 
-					loadedFile = true;
+						loadedFile = true;
+					} catch (RuntimeException e) {
+						continue;
+					}
 				}
 
 				// Search a key or a scope
@@ -108,8 +127,8 @@ public class Program {
 						==============================================================
 						""");
 
+						// Checks if user wants to insert a key or scope or just exit the option
 						int keyOrScope = 0;
-
 						System.out.println("> Do you want to insert a key or a scope?");
 						do {
 							try {
@@ -124,6 +143,7 @@ public class Program {
 
 						if (keyOrScope == 0) continue;
 
+						// Instructions to enter a correct path
 						System.out.println("\n> Enter the scope path where you want your key/scope to be placed. Consider the example below");
 						System.out.println("\n~/scopeX/scopeY\n");
 						System.out.println("> The \"~\" symbol indicates the global scope.");
@@ -134,10 +154,14 @@ public class Program {
 						System.out.print("> Current file's paths: ");
 						avl.inOrderTraversal();
 						System.out.print("\nScope path: ");
+
+						// If user typed a slash at the end of the path, we just eliminate it by
+						// converting the string to array and joining it again
 						String scopePath = s.nextLine().trim();
 						String[] treadtedScopePath = scopePath.split("/");
 						scopePath = String.join("/", treadtedScopePath);
 						
+						// Searching the scope where the key/scope will be inserted
 						try {
 							avl.searchScope(scopePath);
 							bst.searchScope(scopePath);
@@ -146,9 +170,9 @@ public class Program {
 							System.out.println();
 							continue;
 						}
-
 						System.out.println("\n>>> Scope found successfuly!");
 
+						// Reading node's data
 						System.out.print("Enter the identifier name: ");
 						String identifier = s.nextLine().trim();
 						
@@ -172,11 +196,13 @@ public class Program {
 								continue;
 							}
 						}
+
+						// Showing results
 						System.out.println("\n>>> Insertion made successfully");
-						System.out.println("\n>>> Node's data in BST: ");
-						System.out.println(bst.search(scopePath.concat("/" + identifier)));
-						System.out.println("\n>>> Node's data in AVL: ");
-						System.out.println(avl.search(scopePath.concat("/" + identifier)));
+						System.out.println("\n>>> Data in BST: ");
+						bst.inOrderNode();
+						System.out.println("\n>>> Data in AVL: ");
+						avl.inOrderNode();
 					} else System.out.println("File not loaded. Please, provide a valid file and select option 1 to load the file's contents into memory.");
 				}
 
@@ -191,6 +217,7 @@ public class Program {
 						==============================================================
 						""");
 
+						// Instructions to enter a correct path
 						System.out.println("\n> Enter the path of the key you want to be updated. Consider the example below");
 						System.out.println("\n~/scopeX/scopeY/key\n");
 						System.out.println("> The \"~\" symbol indicates the global scope.");
@@ -200,12 +227,15 @@ public class Program {
 						System.out.print("> Current file's paths: ");
 						avl.inOrderTraversal();
 
+						// If user typed a slash at the end of the path, we just eliminate it by
+						// converting the string to array and joining it again
 						System.out.print("\nKey path: ");
 						String keyPath = s.nextLine().trim();
 						String[] treatedKeyPath = keyPath.split("/");
 						keyPath = String.join("/", treatedKeyPath);
 						
 						try {
+							// Searching for the key and showing off results
 							Node avlKey = avl.searchKey(keyPath);
 							Node bstKey = bst.searchKey(keyPath);
 
@@ -246,6 +276,7 @@ public class Program {
 						==============================================================
 						""");
 
+						// Instructions to enter a correct path
 						System.out.println("\n> Enter the path of the key you want to be removed. Consider the example below");
 						System.out.println("\n~/scopeX/scopeY/key\n");
 						System.out.println("> The \"~\" symbol indicates the global scope.");
@@ -255,14 +286,17 @@ public class Program {
 						System.out.print("> Current file's paths: ");
 						avl.inOrderTraversal();
 
+						// If user typed a slash at the end of the path, we just eliminate it by
+						// converting the string to array and joining it again
 						System.out.print("\nKey path: ");
 						String keyPath = s.nextLine().trim();
 						String[] treatedKeyPath = keyPath.split("/");
 						keyPath = String.join("/", treatedKeyPath);
 						
 						try {
-							Node avlKey = avl.removeKey(keyPath);
-							Node bstKey = bst.removeKey(keyPath);
+							// Searching for the key, removing it and showing off the resulting tree
+							avl.removeKey(keyPath);
+							bst.removeKey(keyPath);
 
 							System.out.println("\n>>> Key removed successfuly!");
 
@@ -296,9 +330,17 @@ public class Program {
 						==============================================================
 						""");
 
-						// System.out.print("Enter the name of the \".ed2\" file in which you will save the content: ");
-						// String filePath = s.nextLine();
-						writeFile(avl, "output.ed2");
+						// Reading user's file
+						System.out.print("Enter the name of the \".ed2\" file in which you will save the content: ");
+						String filePath = s.nextLine();
+
+						if (!filePath.contains(".ed2")) {
+							System.out.println("Invalid input file. It must be an \".ed2\" file.");
+							continue;
+						}
+
+						writeFile(avl, filePath);
+						// writeFile(avl, "output.ed2");
 
 					} else System.out.println("File not loaded. Please, provide a valid file and select option 1 to load the file's contents into memory.");
 				}
@@ -379,6 +421,7 @@ public class Program {
 
 	public static int readOption(Scanner s) {
         int opt = 0;
+		// Validating the input tobe be a number between 1-9
         do {
 			try {
 				showMenu();
@@ -389,7 +432,6 @@ public class Program {
                 continue;
             }
         } while (opt < 1 || opt > 9);
-
         return opt;
     }
 
@@ -401,7 +443,6 @@ public class Program {
 			Scanner scanner = new Scanner(fileReader);
 
 			// Read the file line by line and store its contents in the List<String>
-
 			while (scanner.hasNextLine()) {
 				ed2File.add(scanner.nextLine());
 			}
@@ -410,7 +451,6 @@ public class Program {
 		} catch (FileNotFoundException e) {
 			System.out.println("No such file \""+ filePath + "\"");
 		}
-
 		return ed2File;
 	}
 
@@ -421,7 +461,7 @@ public class Program {
 			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
 			
 			// Making an in-order printing
-			if (avl.isEmpty()) throw new RuntimeException("Unable to write tree's contents in the file: tree is empty");
+			if (avl.isEmpty()) throw new RuntimeException(">>> Unable to write tree's contents in the file: tree is empty");
 			
 			// Placing every node in order inside a list
 			List<Node> nodeList = new ArrayList<>();
@@ -432,31 +472,61 @@ public class Program {
 			int tabsNumber = 0;
 			
 			for (Node node : nodeList) {
-				tabsNumber = (node.getPath().split("/").length) - 2;
+				// Updating the number of tabs used in the previous line
+				prevTabsNumber = tabsNumber;
 
-				if (tabsNumber >= 0 && prevTabsNumber > tabsNumber) System.out.println(")");
+				// The number of tabs is the number of elements, desconsidering the global scope and the current element
+				if (!node.getName().equals("~"))
+					tabsNumber = (node.getPath().split("/").length) - 2;
 
-				for (int i = 0; i < tabsNumber; i++) System.out.print("\t");
+				// If there are more tabs in the previous line than the actual
+				if (prevTabsNumber > tabsNumber) {
+					int currentTab = prevTabsNumber - 1;
 
+					// While the number of tabs is greater or equal than the actual one
+					while (currentTab >= tabsNumber) {
+						// Add a ")" at the end of every function with the right tab size 
+						for (int i = 0; i < currentTab; i++) {
+							System.out.print("\t");
+							bufferedWriter.write("\t");
+						}
+						System.out.println(")");
+
+						bufferedWriter.write(")");
+						bufferedWriter.newLine();
+						currentTab--;
+					}
+				}
+
+				// Format the right number of tabs
+				for (int i = 0; i < tabsNumber; i++) {
+					System.out.print("\t");
+					bufferedWriter.write("\t");
+				}
+
+				// If the node is a scope, then print its name followed by a "("
 				if (node.getType().equals("SCOPE") && !node.getName().equals("~")) {
 					System.out.print(node.getName() + " (");
 					System.out.println();
+
+					bufferedWriter.write(node.getName() + " (");
+					bufferedWriter.newLine();
+				// If the node is a key, then print its name followed by a "=" and its value
 				} else if (node.getType().equals("KEY")) {
 					System.out.print(node.getName() + " = " + node.getValue());
 					System.out.println();
+
+					bufferedWriter.write(node.getName() + " = " + node.getValue());
+					bufferedWriter.newLine();
 				}
-
-				prevTabsNumber = tabsNumber;
 			}
-
 			bufferedWriter.close();
             
         } catch (FileNotFoundException e) {
-            throw new RuntimeException("Program.writeFile(): " + e.getMessage());
+            throw new RuntimeException(">>> Program.writeFile(): " + e.getMessage());
         } catch (IOException e) {
-            throw new RuntimeException("Program.writeFile(): " + e.getMessage());
+            throw new RuntimeException(">>> Program.writeFile(): " + e.getMessage());
         }
-
         return true;
     }
 
@@ -466,20 +536,26 @@ public class Program {
 		// Acces the left child of root
 		inOrderStorage(root.getLeft(), nodeList);
 
+		if (!root.notDuplicated() && root.getDuplicated().getType().equals("KEY"))
+			nodeList.add(root.getDuplicated());
+			
 		nodeList.add(root);
+
+		if (!root.notDuplicated() && root.getDuplicated().getType().equals("SCOPE")) 
+			nodeList.add(root.getDuplicated());
 
 		// Acces the right child of root
 		inOrderStorage(root.getRight(), nodeList);
 	}
 
+	// Validate the list of contents
 	public static BinaryTree[] testParser(List<String> contents) {
 		Parser parser = new Parser();
 		try {
 			return parser.run(contents);
 		} catch(RuntimeException e) {
 			System.out.println();
-			System.out.println("The content is not grammatically correct:");
-			System.out.println("  > " + e.getMessage());
+			System.out.println(">>> The content is not grammatically correct: " + e.getMessage());
 			System.out.println();
 			return null;
 		}

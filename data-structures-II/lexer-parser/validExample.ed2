@@ -1,8 +1,0 @@
-list = strings
-
-functionX (
-    x = value1
-    y = value2
-)
-
-x = value3

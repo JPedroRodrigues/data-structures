@@ -1,0 +1,6 @@
+# Arquivo faltando parênteses de fechamento
+configuração (
+  servidor (
+    endereço = 192.168.1.1
+    porta = 8080
+  # Parênteses de fechamento ausentes
